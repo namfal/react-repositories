@@ -54,3 +54,12 @@ tr:hover td {
     background-color: #515f6c;
     cursor: default;
 }
+
+td a {
+    text-decoration: none;
+    color: white;
+}
+
+tr:hover td a {
+    color: #7affc9;
+}
