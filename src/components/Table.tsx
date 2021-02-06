@@ -11,10 +11,25 @@ interface IRepositoryListItem {
     }
 }
 
+interface IPageInfo {
+    endCursor: string,
+    startCursor: string,
+    hasNextPage: boolean,
+    hasPreviousPage: boolean,
+    pageCount: number
+}
+
 function Table () {
     const [list, setList] = useState<IRepositoryListItem[]>([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [pageInfo, setPageInfo] = useState<IPageInfo>({
+        endCursor: '',
+        startCursor: '',
+        hasNextPage: false,
+        hasPreviousPage: false,
+        pageCount: 0
+    })
 
     useEffect(() => {
         (async () => {
@@ -22,13 +37,12 @@ function Table () {
                 setLoading(true)
                 const response = await getRepositories()
                 setList(response.search.edges)
+                setPageInfo({...response.search.pageInfo, pageCount: 0})
             } catch (e) {
-                console.log(e)
                 setError(e.message)
             } finally {
                 setLoading(false)
             }
-
         })()
     }, [])
 
@@ -36,6 +50,35 @@ function Table () {
         return <div className="loading">Loading...</div>
     } else if (error) {
         return <div className="error">{error}</div>
+    }
+
+    const nextPage = async () => {
+        try {
+            setLoading(true)
+            const response = await getRepositories(pageInfo.endCursor)
+            setList(response.search.edges)
+            setPageInfo(response.search.pageInfo)
+            const pageCount = pageInfo.pageCount + 1
+            setPageInfo({...response.search.pageInfo, pageCount})
+        } catch (e) {
+            setError(e.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const previousPage = async () => {
+        try {
+            setLoading(true)
+            const response = await getRepositories(null, pageInfo.startCursor)
+            setList(response.search.edges)
+            const pageCount = pageInfo.pageCount - 1
+            setPageInfo({...response.search.pageInfo, pageCount})
+        } catch (e) {
+            setError(e.message)
+        } finally {
+            setLoading(false)
+        }
     }
 
 
@@ -62,6 +105,15 @@ function Table () {
                     })}
                 </tbody>
             </table>
+        <div className="pagination">
+            {pageInfo.hasPreviousPage &&
+                <button onClick={previousPage}>Previous Page</button>
+            }
+            <p>Page: { pageInfo.pageCount }</p>
+            {pageInfo.hasNextPage &&
+                <button onClick={nextPage}>Next Page</button>
+            }
+        </div>
         </>
 }
 
