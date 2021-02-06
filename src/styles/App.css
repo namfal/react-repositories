@@ -55,6 +55,10 @@ tr:hover td {
     cursor: default;
 }
 
+td:first-child {
+    text-align: left;
+}
+
 td a {
     text-decoration: none;
     color: white;
