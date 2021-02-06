@@ -35,6 +35,14 @@ th {
     background-color: #013943;
 }
 
+th:first-child {
+    border-top-left-radius: 8px;
+}
+
+th:last-child {
+    border-top-right-radius: 8px;
+}
+
 td {
     font-size: 18px;
     color: white;
