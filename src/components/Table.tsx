@@ -1,19 +1,45 @@
 import React, { useState, useEffect } from 'react'
+import { getRepositories } from '../services/repositories'
+
+interface IRepositoryListItem {
+    node: {
+        id: string,
+        nameWithOwner: string,
+        url: string,
+        forkCount: number,
+        stargazerCount: number
+    }
+}
 
 function Table () {
+    const [list, setList] = useState<IRepositoryListItem[]>([])
+
+    useEffect(() => {
+        (async () => {
+            const response = await getRepositories()
+            console.log(response)
+            setList(response.search.edges)
+        })()
+    }, [])
+
+
     return <>
             <table>
                 <thead>
                     <tr>
-                        <th>repository</th>
-                        <th>stars</th>
-                        <th>forks</th>
+                        <th>Repository Name</th>
+                        <th>🌟 Stars</th>
+                        <th>🍴 Forks</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <td>repository</td>
-                    <td>stars</td>
-                    <td>forks</td>
+                    {list.map(listItem => {
+                        return <tr key={listItem.node.id}>
+                            <td>{ listItem.node.nameWithOwner }</td>
+                            <td>{ listItem.node.stargazerCount }</td>
+                            <td>{ listItem.node.forkCount }</td>
+                        </tr>
+                    })}
                 </tbody>
             </table>
         </>
