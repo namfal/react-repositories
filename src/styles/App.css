@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: #272c35;
+}
+
+table {
+    display: block;
+    overflow: scroll;
+    border: 2px solid white;
+    border-collapse: collapse;
+    border-radius: 8px;
+    box-shadow: 4px 4px 8px 10px rgba(255, 255, 255, 0.5);
+}
+
+th {
+    font-weight: bold;
+    font-size: 28px;
+    padding: 15px;
+    color: white;
+    text-align: center;
+}
+
+td {
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+tr:hover td {
+    background-color: #515f6c;
+    cursor: default;
+}
