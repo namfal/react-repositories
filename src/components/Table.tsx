@@ -35,7 +35,11 @@ function Table () {
                 <tbody>
                     {list.map(listItem => {
                         return <tr key={listItem.node.id}>
-                            <td>{ listItem.node.nameWithOwner }</td>
+                            <td>
+                                <a href={listItem.node.url} target="_blank" rel="noreferrer">
+                                    { listItem.node.nameWithOwner}
+                                </a>
+                            </td>
                             <td>{ listItem.node.stargazerCount }</td>
                             <td>{ listItem.node.forkCount }</td>
                         </tr>
