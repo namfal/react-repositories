@@ -13,14 +13,30 @@ interface IRepositoryListItem {
 
 function Table () {
     const [list, setList] = useState<IRepositoryListItem[]>([])
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         (async () => {
-            const response = await getRepositories()
-            console.log(response)
-            setList(response.search.edges)
+            try {
+                setLoading(true)
+                const response = await getRepositories()
+                setList(response.search.edges)
+            } catch (e) {
+                console.log(e)
+                setError(e.message)
+            } finally {
+                setLoading(false)
+            }
+
         })()
     }, [])
+
+    if (loading) {
+        return <div className="loading">Loading...</div>
+    } else if (error) {
+        return <div className="error">{error}</div>
+    }
 
 
     return <>
