@@ -4,13 +4,13 @@ const BASE_URL = 'https://api.github.com/graphql'
 
 export async function getRepositories(endCursor: null|string = null, startCursor: null|string = null) {
     const query = `
-    query ($endCursor: String){ 
+    query ($endCursor: String, $startCursor: String){ 
       rateLimit {
         cost
         remaining
         resetAt
         }
-      search (query: "topic:react", type: REPOSITORY, first: 20, after: $endCursor) {
+      search (query: "topic:react", type: REPOSITORY, first: 20, after: $endCursor, before: $startCursor) {
         repositoryCount
         edges {
           node {
@@ -27,8 +27,8 @@ export async function getRepositories(endCursor: null|string = null, startCursor
         pageInfo{
             endCursor
             startCursor
-          hasNextPage
-          hasPreviousPage
+            hasNextPage
+            hasPreviousPage
       }
       }
     }
