@@ -57,7 +57,6 @@ function Table () {
             setLoading(true)
             const response = await getRepositories(pageInfo.endCursor)
             setList(response.search.edges)
-            setPageInfo(response.search.pageInfo)
             const pageCount = pageInfo.pageCount + 1
             setPageInfo({...response.search.pageInfo, pageCount})
         } catch (e) {
