@@ -33,6 +33,7 @@ th {
     position: sticky;
     top: 0;
     background-color: #013943;
+    cursor: default;
 }
 
 th:first-child {
