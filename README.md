@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Sample Project with Create React App
+
+This is a simple React Application that renders list of react repositories in a table using GitHub's GraphQL api. You will need to use your own access token (you can place it in a .env file).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
