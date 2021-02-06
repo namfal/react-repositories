@@ -43,6 +43,6 @@ export async function getRepositories() {
         return response.data.data
     } catch (e) {
         console.error(e)
-        return `Unable to fetch the list from URL ${BASE_URL}`
+        throw new Error(`⚠️ There was an error fetching the data from URL ${BASE_URL}`)
     }
 }
