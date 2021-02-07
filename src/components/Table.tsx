@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { getRepositories } from '../services/repositories'
 
-interface IRepositoryListItem {
+export interface IRepositoryListItem {
     node: {
         id: string,
         nameWithOwner: string,
@@ -19,7 +19,7 @@ interface IPageInfo {
     pageCount: number
 }
 
-function Table () {
+const Table: React.FC = () => {
 	const [list, setList] = useState<IRepositoryListItem[]>([])
 	const [error, setError] = useState('')
 	const [loading, setLoading] = useState(false)
