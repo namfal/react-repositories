@@ -21,6 +21,8 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "semi": [ "error", "never" ]
+        "semi": [ "error", "never" ],
+        "indent": ["error", "tab"],
+        "quotes": ["error", "single"]
     }
 }

@@ -1,9 +1,10 @@
 import axios from 'axios'
+import { IRepositoryListItem } from '../components/Table'
 
 const BASE_URL = 'https://api.github.com/graphql'
 
-export async function getRepositories(endCursor: null|string = null, startCursor: null|string = null) {
-    const query = `
+export async function getRepositories(endCursor: null|string = null, startCursor: null|string = null): Promise<IRepositoryListItem[]> {
+	const query = `
     query ($endCursor: String, $startCursor: String){ 
       rateLimit {
         cost
@@ -33,20 +34,20 @@ export async function getRepositories(endCursor: null|string = null, startCursor
       }
     }
 `
-    const variables = {
-        'endCursor': endCursor,
-        'startCursor': startCursor
-    }
+	const variables = {
+		'endCursor': endCursor,
+		'startCursor': startCursor
+	}
 
-    try {
-        const response = await axios.post(BASE_URL, {query, variables}, {
-            'headers': {
-                Authorization: process.env.REACT_APP_GITHUB_TOKEN
-            }
-        })
-        return response.data.data
-    } catch (e) {
-        console.error(e)
-        throw new Error(`⚠️ There was an error fetching the data from URL ${BASE_URL}`)
-    }
+	try {
+		const response = await axios.post(BASE_URL, {query, variables}, {
+			'headers': {
+				Authorization: process.env.REACT_APP_GITHUB_TOKEN
+			}
+		})
+		return response.data.data
+	} catch (e) {
+		console.error(e)
+		throw new Error(`⚠️ There was an error fetching the data from URL ${BASE_URL}`)
+	}
 }
