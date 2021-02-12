@@ -55,6 +55,10 @@ td {
     border-bottom: 1px solid #7d7d7d;
 }
 
+tr:last-child td {
+    border-bottom: none;
+}
+
 tr:hover td {
     background-color: #515f6c;
     cursor: default;
