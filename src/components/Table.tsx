@@ -12,11 +12,10 @@ export interface IRepositoryListItem {
 }
 
 interface IPageInfo {
-    endCursor: string,
-    startCursor: string,
+    endCursor: string | null,
+    startCursor: string | null,
     hasNextPage: boolean,
-    hasPreviousPage: boolean,
-    pageCount: number
+    hasPreviousPage: boolean
 }
 
 const Table: React.FC = () => {
@@ -24,27 +23,29 @@ const Table: React.FC = () => {
 	const [error, setError] = useState('')
 	const [loading, setLoading] = useState(false)
 	const [pageInfo, setPageInfo] = useState<IPageInfo>({
-		endCursor: '',
-		startCursor: '',
+		endCursor: null,
+		startCursor: null,
 		hasNextPage: false,
-		hasPreviousPage: false,
-		pageCount: 0
+		hasPreviousPage: false
 	})
+	const [pageCount, setPageCount] = useState(0)
+	const [fetchNextPage, setFetchNextPage] = useState(true)
 
 	useEffect(() => {
 		(async () => {
 			try {
 				setLoading(true)
-				const response = await getRepositories()
+				const cursor = fetchNextPage ? pageInfo.endCursor : pageInfo.startCursor
+				const response = await getRepositories(cursor, fetchNextPage)
 				setList(response.search.edges)
-				setPageInfo({...response.search.pageInfo, pageCount: 0})
+				setPageInfo({...response.search.pageInfo})
 			} catch (e) {
 				setError(e.message)
 			} finally {
 				setLoading(false)
 			}
 		})()
-	}, [])
+	}, [pageCount])
 
 	if (loading) {
 		return <div className="loading">Loading...</div>
@@ -53,31 +54,13 @@ const Table: React.FC = () => {
 	}
 
 	const nextPage = async () => {
-		try {
-			setLoading(true)
-			const response = await getRepositories(pageInfo.endCursor)
-			setList(response.search.edges)
-			const pageCount = pageInfo.pageCount + 1
-			setPageInfo({...response.search.pageInfo, pageCount})
-		} catch (e) {
-			setError(e.message)
-		} finally {
-			setLoading(false)
-		}
+		setPageCount(pageCount + 1)
+		setFetchNextPage(true)
 	}
 
 	const previousPage = async () => {
-		try {
-			setLoading(true)
-			const response = await getRepositories(null, pageInfo.startCursor)
-			setList(response.search.edges)
-			const pageCount = pageInfo.pageCount - 1
-			setPageInfo({...response.search.pageInfo, pageCount})
-		} catch (e) {
-			setError(e.message)
-		} finally {
-			setLoading(false)
-		}
+		setPageCount(pageCount - 1)
+		setFetchNextPage(false)
 	}
 
 
@@ -108,7 +91,7 @@ const Table: React.FC = () => {
 			{pageInfo.hasPreviousPage &&
                 <button onClick={previousPage}>Previous Page</button>
 			}
-			<p>Page: { pageInfo.pageCount }</p>
+			<p>Page: { pageCount }</p>
 			{pageInfo.hasNextPage &&
                 <button onClick={nextPage}>Next Page</button>
 			}

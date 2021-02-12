@@ -1,16 +1,11 @@
 import axios from 'axios'
 
 const BASE_URL = 'https://api.github.com/graphql'
-
-export async function getRepositories(endCursor: null|string = null, startCursor: null|string = null) {
+// endCursor: null|string = null, startCursor: null|string = null, fetchNextPage: boolean
+export async function getRepositories(cursor: null|string = null, fetchNextPage: boolean) {
 	const query = `
-    query ($endCursor: String, $startCursor: String){ 
-      rateLimit {
-        cost
-        remaining
-        resetAt
-        }
-      search (query: "topic:react", type: REPOSITORY, first: 20, after: $endCursor, before: $startCursor) {
+    query ($cursor: String){ 
+      search (query: "topic:react", type: REPOSITORY, ${fetchNextPage ? 'first' :'last'}: 20, ${fetchNextPage ? 'after' :'before'} : $cursor) {
         repositoryCount
         edges {
           node {
@@ -34,8 +29,7 @@ export async function getRepositories(endCursor: null|string = null, startCursor
     }
 `
 	const variables = {
-		'endCursor': endCursor,
-		'startCursor': startCursor
+		'cursor': cursor
 	}
 
 	try {
