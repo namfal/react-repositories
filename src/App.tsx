@@ -2,7 +2,7 @@ import React from 'react'
 import './styles/App.css'
 import Table from './components/Table'
 
-function App (): React.ReactNode {
+function App () {
 	return (
 		<div className="App">
 			<Table/>

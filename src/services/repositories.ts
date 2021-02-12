@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { IRepositoryListItem } from '../components/Table'
 
 const BASE_URL = 'https://api.github.com/graphql'
 
-export async function getRepositories(endCursor: null|string = null, startCursor: null|string = null): Promise<IRepositoryListItem[]> {
+export async function getRepositories(endCursor: null|string = null, startCursor: null|string = null) {
 	const query = `
     query ($endCursor: String, $startCursor: String){ 
       rateLimit {
