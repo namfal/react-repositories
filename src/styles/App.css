@@ -52,6 +52,7 @@ td {
     color: white;
     padding: 15px;
     text-align: center;
+    border-bottom: 1px solid #7d7d7d;
 }
 
 tr:hover td {
